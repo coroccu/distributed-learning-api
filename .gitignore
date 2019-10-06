@@ -1,0 +1,25 @@
+# For Mac
+.DS_STORE
+
+# For mysql data
+mysql/data/
+
+# For phpadmin data
+phpadmin-sessions/
+
+# For VSCode
+.vscode/
+
+# For 3rd party codes
+ci/vendor/
+ci/application/tests/.gitignore
+ci/application/tests/Bootstrap.php
+ci/application/tests/DbTestCase.php
+ci/application/tests/TestCase.php
+ci/application/tests/UnitTestCase.php
+ci/application/tests/_ci_phpunit_test/
+ci/application/tests/build/
+ci/application/tests/helpers/
+ci/application/tests/hooks/
+ci/application/tests/mocks/
+ci/application/tests/phpunit.xml
