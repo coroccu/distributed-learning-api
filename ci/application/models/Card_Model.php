@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * Distributed-learning-api
+ * 
  * @author    Coroccu <https://github.com/coroccu>
  * @copyright 2019 Coroccu
  * @license   MIT License
@@ -21,6 +22,12 @@ class Card_Model extends CI_Model
 
         $insert_result = $this->db->insert('cards', $data);
         return $insert_result;
+    }
+
+    public function readCards()
+    {
+        $get_result = $this->db->get('cards');
+        return $get_result->result();
     }
 }
 ?>

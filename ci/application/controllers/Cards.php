@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * Distributed-learning-api
+ * 
  * @author    Coroccu <https://github.com/coroccu>
  * @copyright 2019 Coroccu
  * @license   MIT License
@@ -16,7 +17,9 @@ class Cards extends CI_Controller
         if ($_SERVER['REQUEST_METHOD'] != 'POST') {
             show_404('views/errors/html/error_404.php');
         } else {
-            if (!(isset($_POST['question']) and isset($_POST['answer']) and isset($_POST['category']))) {
+            if (!($this->input->post('question') and $this->input->post('answer') 
+                and $this->input->post('category'))
+            ) {
                 show_error("Parameters are not enough for the request.");
             } else {
                 if ($this->Card_Model->createCard(
@@ -25,12 +28,29 @@ class Cards extends CI_Controller
                     $_POST['category']
                 )
                 ) {
-                    echo "Your card has been created successfully.";
+                    $this->output
+                        ->set_content_type('application/json')
+                        ->set_output(json_encode(array('message' => "Your card has been created successfully.")));
                 } else {
-                    // How Can I test this case?
                     show_error("Your card has NOT been created successfully.");
                 }
             }
         }
+    }
+
+    public function read() 
+    {
+        if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+            show_404('views/errors/html/error_404.php');
+        } else {
+            $read_result = $this->Card_Model->readCards();
+            if (isset($read_result)) {
+                $this->output
+                    ->set_content_type('application/json')
+                    ->set_output(json_encode($read_result));
+            } else {
+                show_error("There are no cards or cards CANNOT be read correctly.");
+            }           
+        }        
     }
 }
