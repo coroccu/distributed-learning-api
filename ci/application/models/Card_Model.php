@@ -29,5 +29,26 @@ class Card_Model extends CI_Model
         $get_result = $this->db->get('cards');
         return $get_result->result();
     }
+
+    public function readCardById($id)
+    {
+        $this->db->where('id', $id);
+        $get_result = $this->db->get('cards');
+        return $get_result->result();
+    }
+
+    public function updateCard($id, $question, $answer, $category)
+    {
+        $data = array(
+            'question' => $question,
+            'answer' => $answer,
+            'category' => $category
+        );
+
+        $this->db->where('id', $id);
+        $update_result = $this->db->update('cards', $data);
+
+        return $update_result;
+    }
 }
 ?>
