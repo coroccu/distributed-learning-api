@@ -23,7 +23,7 @@ class Cards_Test extends TestCase
                 $CI->Card_Model = $card_model;
             }
         );
-        
+
         $output = $this->request(
             'POST', ['Cards', 'create'], [
             'question' => 'QuestionControllerCreateTest',
@@ -156,6 +156,7 @@ class Cards_Test extends TestCase
                 $CI->Card_Model = $card_model;
             }
         );
+
         $output = $this->request(
             'POST', ['Cards', 'update'], [
             'id' => '1',
@@ -169,7 +170,7 @@ class Cards_Test extends TestCase
         $this->assertContains("Your card has been updated successfully.", $output);
     }
 
-    public function testApiUpdateModelUpdateCardFail() 
+    public function testApiUpdateCardFail() 
     {
         $this->request->setCallable(
             function ($CI) {
@@ -243,6 +244,7 @@ class Cards_Test extends TestCase
                 $CI->Card_Model = $card_model;
             }
         );
+
         $output = $this->request(
             'POST', ['Cards', 'update'], [
             'id' => 'WRONGID',
@@ -304,6 +306,108 @@ class Cards_Test extends TestCase
     public function testApiUpdateGETRequest() 
     {
         $this->request('GET', ['Cards', 'update']);
+        $this->assertResponseCode(404);
+    }
+
+    public function testApiDeleteSuccess()
+    {
+        $this->request->setCallable(
+            function ($CI) {
+                $card_model = $this->getDouble(
+                    'Card_Model', 
+                    ['deleteCard' => true,'readCardById' => true]
+                );
+                $CI->Card_Model = $card_model;
+            }
+        );
+
+        $output = $this->request(
+            'POST', ['Cards', 'delete'], [
+            'id' => '1'
+            ]
+        );
+
+        $this->assertResponseCode(200);
+        $this->assertContains(
+            "Your card has been deleted successfully.", 
+            $output
+        );        
+    }
+
+    public function testApiDeleteCardFail() 
+    {
+        $this->request->setCallable(
+            function ($CI) {
+                $card_model = $this->getDouble(
+                    'Card_Model', 
+                    ['deleteCard' => false,'readCardById' => true]
+                );
+                $CI->Card_Model = $card_model;
+            }
+        );
+
+        $output = $this->request(
+            'POST', ['Cards', 'delete'], [
+            'id' => '1'
+            ]
+        );
+
+        $this->assertResponseCode(500);
+        $this->assertContains(
+            "Your card has NOT been deleted successfully.", 
+            $output
+        );
+    }
+
+    public function testApiDeleteIdParameterNotExist() 
+    {
+        $output = $this->request(
+            'POST', 
+            ['Cards', 'delete']
+        );
+        $this->assertResponseCode(500);
+    }
+
+    public function testApiDeleteIdParameterEmpty() 
+    {
+        $output = $this->request(
+            'POST', 
+            ['Cards', 'delete'], 
+            [
+                'id' => ''
+            ]
+        );
+        $this->assertResponseCode(500);
+    }
+
+    public function testApiDeleteIdParameterWrong() 
+    {
+        $this->request->setCallable(
+            function ($CI) {
+                $card_model = $this->getDouble(
+                    'Card_Model', 
+                    ['readCardById' => false]
+                );
+                $CI->Card_Model = $card_model;
+            }
+        );
+
+        $output = $this->request(
+            'POST', ['Cards', 'delete'], [
+            'id' => 'WRONGID'
+            ]
+        );
+
+        $this->assertResponseCode(500);
+        $this->assertContains(
+            "The id does not exist. Please use correct id.", 
+            $output
+        );
+    }
+
+    public function testApiDeleteGETRequest() 
+    {
+        $this->request('GET', ['Cards', 'delete']);
         $this->assertResponseCode(404);
     }
 }   

@@ -129,6 +129,31 @@ class Card_Model_Test extends TestCase
         );
     }
 
+    public function testDeleteCard() 
+    {
+        $test_data = array(
+            'question' => 'QuestionModelDeleteTest',
+            'answer' => 'AnswerModelDeleteTest',
+            'category' => 'CategoryModelDeleteTest'
+        );
+
+        $this->obj->db->insert('cards', $test_data);
+
+        $this->obj->db->where(
+            'question', 
+            $test_data['question']
+        );
+
+        $select_result = $this->obj->db->get('cards')->result();
+        $id = $select_result[0]->id;
+        $delete_result = $this->obj->deleteCard($id);
+        $this->assertEquals(true, $delete_result);
+
+        $this->obj->db->where('id', $id);
+        $deleted_item = $this->obj->db->get('cards')->result();
+        $this->assertEquals(0, count($deleted_item));
+    } 
+
     public function tearDown()
     {
         $this->obj->db->where('question', $this->test_data['create']['question']);

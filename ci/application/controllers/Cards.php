@@ -98,4 +98,34 @@ class Cards extends CI_Controller
             }
         }
     }
+
+    public function delete() 
+    {
+        if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+            show_404('views/errors/html/error_404.php');
+        } else {
+            if (!$this->input->post('id')) {
+                show_error("Parameters are not enough for the request.");
+            } else {
+                if (!$this->Card_Model->readCardById($this->input->post('id'))) {
+                    show_error("The id does not exist. Please use correct id.");
+                }
+                
+                if ($this->Card_Model->deleteCard($this->input->post('id'))) {
+                    $this->output
+                        ->set_content_type('application/json')
+                        ->set_output(
+                            json_encode(
+                                array(
+                                    'message' =>
+                                    "Your card has been deleted successfully."
+                                )
+                            )
+                        );
+                } else {
+                    show_error("Your card has NOT been deleted successfully.");
+                }
+            }
+        }
+    }
 }

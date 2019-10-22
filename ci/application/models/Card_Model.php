@@ -50,5 +50,13 @@ class Card_Model extends CI_Model
 
         return $update_result;
     }
+
+    public function deleteCard($id)
+    {
+        $this->db->where('id', $id);
+        $delete_result = $this->db->delete('cards');
+
+        return $delete_result;
+    }
 }
 ?>
