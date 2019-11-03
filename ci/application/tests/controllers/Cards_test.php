@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Cards_Test extends TestCase
 {
-    public function testApiCreateSuccess() 
+    public function test_CreateAPI_WhenInputQuestionAnswerCategory_200Success() 
     {
         $this->request->setCallable(
             function ($CI) {
@@ -36,7 +36,7 @@ class Cards_Test extends TestCase
         $this->assertContains("Your card has been created successfully.", $output);
     }
 
-    public function testApiCreateError() 
+    public function test_CreateAPI_WhenCardModelCreateCardFail_500Error() 
     {
         $this->request->setCallable(
             function ($CI) {
@@ -60,13 +60,13 @@ class Cards_Test extends TestCase
         $this->assertContains("Your card has NOT been created successfully.", $output);
     }
 
-    public function testApiCreateErrorNoParameters() 
+    public function test_CreateAPI_WhenInputNoParameters_500Error() 
     {
         $this->request('POST', ['Cards', 'create']);
         $this->assertResponseCode(500);
     }
 
-    public function testApiCreateErrorQuestionParameter() 
+    public function test_CreateAPI_WhenInputOnlyQuestion_500Error() 
     {
         $this->request(
             'POST', ['Cards', 'create'], 
@@ -75,7 +75,7 @@ class Cards_Test extends TestCase
         $this->assertResponseCode(500);
     }
 
-    public function testApiCreatePOSTErrorAnswerParameter() 
+    public function test_CreateAPI_WhenInputOnlyAnswer_500Error() 
     {
         $this->request(
             'POST', 
@@ -85,7 +85,7 @@ class Cards_Test extends TestCase
         $this->assertResponseCode(500);
     }
 
-    public function testApiCreatePOSTErrorCategoryParameter() 
+    public function test_CreateAPI_WhenInputOnlyCategory_500Error() 
     {
         $this->request(
             'POST', ['Cards', 'create'], 
@@ -94,13 +94,13 @@ class Cards_Test extends TestCase
         $this->assertResponseCode(500);
     }
 
-    public function testApiCreateGETError() 
+    public function test_CreateAPI_WhenAccessWithGetMethod_404Error() 
     {
         $this->request('GET', ['Cards', 'create']);
         $this->assertResponseCode(404);
     }
 
-    public function testApiReadSuccess() 
+    public function test_ReadAPI_200Success() 
     {
         $this->request->setCallable(
             function ($CI) {
@@ -122,7 +122,7 @@ class Cards_Test extends TestCase
         $this->assertContains('QuestionControllerReadTest', $output);
     }    
 
-    public function testApiReadError() 
+    public function test_ReadAPI_WhenCardModelReadCardsFail_500Error() 
     {
         $this->request->setCallable(
             function ($CI) {
@@ -139,13 +139,13 @@ class Cards_Test extends TestCase
         $this->assertContains('There are no cards or cards CANNOT be read correctly.', $output);
     }  
 
-    public function testApiReadGETError() 
+    public function test_ReadAPI_WhenAccessWithGetMethod_404Error() 
     {
         $this->request('GET', ['Cards', 'read']);
         $this->assertResponseCode(404);
     }
 
-    public function testApiUpdateSuccess() 
+    public function test_UpdateAPI_WhenInputIdQuestionAnswerCategory_200Success() 
     {
         $this->request->setCallable(
             function ($CI) {
@@ -170,7 +170,7 @@ class Cards_Test extends TestCase
         $this->assertContains("Your card has been updated successfully.", $output);
     }
 
-    public function testApiUpdateCardFail() 
+    public function test_UpdateAPI_WhenCardModelUpdateCardFail_500Error() 
     {
         $this->request->setCallable(
             function ($CI) {
@@ -198,15 +198,15 @@ class Cards_Test extends TestCase
         );
     }
 
-    public function testApiUpdateNoParameters() 
+    public function test_UpdateAPI_WhenInputNoParameters_500Error() 
     {
         $this->request('POST', ['Cards', 'update']);
         $this->assertResponseCode(500);
     }
 
-    public function testApiUpdateIdParameterNotExist() 
+    public function test_UpdateAPI_WhenInputOnlyId_500Error() 
     {
-        $output = $this->request(
+        $this->request(
             'POST', 
             ['Cards', 'update'], 
             [
@@ -218,9 +218,9 @@ class Cards_Test extends TestCase
         $this->assertResponseCode(500);
     }
 
-    public function testApiUpdateIdParameterEmpty() 
+    public function test_UpdateAPI_WhenInputEmptyId_500Error() 
     {
-        $output = $this->request(
+        $this->request(
             'POST', 
             ['Cards', 'update'], 
             [
@@ -233,7 +233,7 @@ class Cards_Test extends TestCase
         $this->assertResponseCode(500);
     }
 
-    public function testApiUpdateIdParameterWrong() 
+    public function test_UpdateAPI_WhenInputWRONGId_500Error() 
     {
         $this->request->setCallable(
             function ($CI) {
@@ -261,9 +261,9 @@ class Cards_Test extends TestCase
         );
     }
 
-    public function testApiUpdateQuestionParameterNotExist() 
+    public function test_UpdateAPI_WhenNotInputQuestion_500Error() 
     {
-        $output = $this->request(
+        $this->request(
             'POST', 
             ['Cards', 'update'], 
             [
@@ -275,9 +275,9 @@ class Cards_Test extends TestCase
         $this->assertResponseCode(500);
     }
 
-    public function testApiUpdateAnswerParameterNotExist() 
+    public function test_UpdateAPI_WhenNotInputAnswer_500Error() 
     {
-        $output = $this->request(
+        $this->request(
             'POST', 
             ['Cards', 'update'], 
             [
@@ -289,9 +289,9 @@ class Cards_Test extends TestCase
         $this->assertResponseCode(500);
     }
 
-    public function testApiUpdateCategoryParameterNotExist() 
+    public function test_UpdateAPI_WhenNotInputCategory_500Error() 
     {
-        $output = $this->request(
+        $this->request(
             'POST', 
             ['Cards', 'update'], 
             [
@@ -303,13 +303,13 @@ class Cards_Test extends TestCase
         $this->assertResponseCode(500);
     }
 
-    public function testApiUpdateGETRequest() 
+    public function test_UpdateAPI_WhenAccessWithGetMethod_404Error() 
     {
         $this->request('GET', ['Cards', 'update']);
         $this->assertResponseCode(404);
     }
 
-    public function testApiDeleteSuccess()
+    public function test_DeleteAPI_WhenInputId_200Success()
     {
         $this->request->setCallable(
             function ($CI) {
@@ -334,7 +334,7 @@ class Cards_Test extends TestCase
         );        
     }
 
-    public function testApiDeleteCardFail() 
+    public function test_DeleteAPI_WhenCardModelDeleteCardFail_500Error() 
     {
         $this->request->setCallable(
             function ($CI) {
@@ -359,18 +359,18 @@ class Cards_Test extends TestCase
         );
     }
 
-    public function testApiDeleteIdParameterNotExist() 
+    public function test_DeleteAPI_WhenNotInputId_500Error() 
     {
-        $output = $this->request(
+        $this->request(
             'POST', 
             ['Cards', 'delete']
         );
         $this->assertResponseCode(500);
     }
 
-    public function testApiDeleteIdParameterEmpty() 
+    public function test_DeleteAPI_WhenInputEmptyId_500Error() 
     {
-        $output = $this->request(
+        $this->request(
             'POST', 
             ['Cards', 'delete'], 
             [
@@ -380,7 +380,7 @@ class Cards_Test extends TestCase
         $this->assertResponseCode(500);
     }
 
-    public function testApiDeleteIdParameterWrong() 
+    public function test_DeleteAPI_WhenInputWRONGId_500Error() 
     {
         $this->request->setCallable(
             function ($CI) {
@@ -405,7 +405,7 @@ class Cards_Test extends TestCase
         );
     }
 
-    public function testApiDeleteGETRequest() 
+    public function test_DeleteAPI_WhenAccessWithGetMethod_404Error() 
     {
         $this->request('GET', ['Cards', 'delete']);
         $this->assertResponseCode(404);
